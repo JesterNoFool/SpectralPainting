@@ -44,7 +44,9 @@ To process with the Gnu Octave script:
    - Gnu Octave will process the image and output the name of the real, 32-bit floating point file containing the samples ready for processing with Gnu Radio Companion.
    - EX:
       **grcImage**
+     
       **Enter the filename: Lucerne-Reuss-river-resized-flipped.jpg**
+
       **Successfully wrote file as Lucerne-Reuss-river-resized-flipped-1600pt-width.rf32**
      
 ## Process the Image Using Gnu Radio Companion
