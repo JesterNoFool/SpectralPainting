@@ -7,7 +7,7 @@ Files and instructions related to creating spectrogram "spectral paintings" usin
 
 The general steps for creating a "spectral painting", assuming you have an image file (.jpg, .tif, .webp, .png) is as follows:
 1. Resize and (if necessary) flip the image. NOTE: Flipping is typically needed if the spectrogram on which the image will be displayed is a falling waterfall; otherwise, the picture will be upside-down:
-   - Imagemagick: From the command line, "convert inputfile.jpg -resize 1600x outputfile.jpg"
+   - Imagemagick: From the command line, "convert inputfile.jpg -resize 1600x -flip outputfile.jpg"
    - ffmpeg: From the command line, "ffmpeg -i inputfile.jpg -filter:v "vflip, scale=1600:-1" outputfile.jpg"
    - Gimp: Import the image, scale the image (Image -> Scale Image), and flip (if necessary, Image -> Transform -> Flip Vertically).
 3. Use script Gnu Octave above to:
@@ -27,4 +27,10 @@ We'll use this image taken in Lucerne, Switzerland, to demonstrate how to create
 ## Resizing and Flipping
 
 The original image is 5312 pixels wide x 2988 pixels high. While this will *work*, it's probably a lot larger image than is needed, even for a decent image. Further, we're going to test it on SDR++. SDR++ uses a falling waterfall. This means we'll need to flip the image (unless you enjoy looking at images upside-down). There are several ways to accomplish these tasks. We'll cover three, different methods:
-   - Use imagemagick. If you have imagemagick installed on your system, you can use a command line statement to perform both the resizing and the image flip. In the command line, navigate to the directory containing the image and use the following command to set the image to a 1600 pixel width, have the system automatically set the height to maintain the same aspect ratio, and flip the image: **convert inputfile.jpg -resize 1600x outputfile.jpg** 
+   - Use imagemagick. If you have imagemagick installed on your system, you can use a command line statement to perform both the resizing and the image flip. In the command line, navigate to the directory containing the image and use the following command to set the image to a 1600 pixel width, have the system automatically set the height to maintain the same aspect ratio, and flip the image: **convert inputfile.jpg -resize 1600x -flip outputfile.jpg**
+   - Use ffmpeg. As with imagemagick, ffmpeg can both resize and flip the image, all from one statement on the command line. Again from command line, navigate to the directory containing the image, then use the following command to resize to a width of 1600 pixels, automatically set the height to maintain the same aspect ratio, and flip the image: **ffmpeg -i inputfile.jpg -filter:v "vflip, scale=1600:-1" outputfile.jpg**
+   - Use Gimp. Gimp is an open-source image editing program. If you have it installed, open Gimp, then open or import the image into it. To change the size, select Image -> Scale Image. Set the width to that desired (such as 1600) and it should automatically set the height to maintain the aspect ratio. To flip the image, select Image -> Transform -> Flip Vertically. Export the image (File -> Export As...).
+
+## Scale Amplitudes and Output as Floating-Point Values
+
+The image will need to be imported into Gnu Radio Companion. While this program is awesome and has many capabilities, it does **not** have the ability to read in images. Instead, we'll use Gnu Octave to read in the file, scale the amplitudes so that, when displayed on the logarithmic scale of a spectral display, they'll be seen as linear, and output the image as a single vector of real, 32-bit floating point values.
