@@ -23,3 +23,8 @@ The general steps for creating a "spectral painting", assuming you have an image
 We'll use this image taken in Lucerne, Switzerland, to demonstrate how to create a "spectrogram painting". 
 
 ![Image showing a narrow river with buildings on either side. A church is on the right bank in the background, and the sky is blue with some fluffy clouds visible.](https://github.com/JesterNoFool/SpectralPainting/blob/main/Lucerne-Reuss-river.jpg)
+
+## Resizing and Flipping
+
+The original image is 5312 pixels wide x 2988 pixels high. While this will *work*, it's probably a lot larger image than is needed, even for a decent image. Further, we're going to test it on SDR++. SDR++ uses a falling waterfall. This means we'll need to flip the image (unless you enjoy looking at images upside-down). There are several ways to accomplish these tasks. We'll cover three, different methods:
+   - Use imagemagick. If you have imagemagick installed on your system, you can use a command line statement to perform both the resizing and the image flip. In the command line, navigate to the directory containing the image and use the following command to set the image to a 1600 pixel width, have the system automatically set the height to maintain the same aspect ratio, and flip the image: **convert inputfile.jpg -resize 1600x outputfile.jpg** 
