@@ -20,3 +20,6 @@ The general steps for creating a "spectral painting", assuming you have an image
 
 # Example
 
+We'll use this image taken in Lucerne, Switzerland, to demonstrate how to create a "spectrogram painting". 
+
+![Image showing a narrow river with buildings on either side. A church is on the right bank in the background, and the sky is blue with some fluffy clouds visible.](https://github.com/JesterNoFool/SpectralPainting/blob/main/Lucerne-Reuss-river.jpg)
