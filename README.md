@@ -31,6 +31,20 @@ The original image is 5312 pixels wide x 2988 pixels high. While this will *work
    - Use ffmpeg. As with imagemagick, ffmpeg can both resize and flip the image, all from one statement on the command line. Again from command line, navigate to the directory containing the image, then use the following command to resize to a width of 1600 pixels, automatically set the height to maintain the same aspect ratio, and flip the image: **ffmpeg -i inputfile.jpg -filter:v "vflip, scale=1600:-1" outputfile.jpg**
    - Use Gimp. Gimp is an open-source image editing program. If you have it installed, open Gimp, then open or import the image into it. To change the size, select Image -> Scale Image. Set the width to that desired (such as 1600) and it should automatically set the height to maintain the aspect ratio. To flip the image, select Image -> Transform -> Flip Vertically. Export the image (File -> Export As...).
 
+![Resized and flipped image ready for processing with Gnu Octave.](https://github.com/JesterNoFool/SpectralPainting/blob/main/Lucerne-Reuss-river-resized-flipped.jpg)
+
 ## Scale Amplitudes and Output as Floating-Point Values
 
 The image will need to be imported into Gnu Radio Companion. While this program is awesome and has many capabilities, it does **not** have the ability to read in images. Instead, we'll use Gnu Octave to read in the file, scale the amplitudes so that, when displayed on the logarithmic scale of a spectral display, they'll be seen as linear, and output the image as a single vector of real, 32-bit floating point values.
+To process with the Gnu Octave script:
+   - put both the script and the image in the same directory.
+   - Open Gnu Octave and, if necessary, change the working directory to that where the script and image are located.
+   - On the Gnu Octave command line, run the script: **grcImage**
+   - When prompted, enter the name of the file.
+   - Gnu Octave will process the image and output the name of the real, 32-bit floating point file containing the samples ready for processing with Gnu Radio Companion.
+   - EX:
+      >> grcImage
+         Enter the filename: Lucerne-Reuss-river-resized-flipped.jpg
+         Successfully wrote file as Lucerne-Reuss-river-resized-flipped-1600pt-width.rf32
+      >>
+## Process the Image Using Gnu Radio Companion
