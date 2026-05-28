@@ -42,7 +42,8 @@ To process with the Gnu Octave script:
    - On the Gnu Octave command line, run the script: **grcImage**
    - When prompted, enter the name of the file.
    - Gnu Octave will process the image and output the name of the real, 32-bit floating point file containing the samples ready for processing with Gnu Radio Companion.
-   - EX:
+   - EX (from the Gnu Octave command line):
+
       **grcImage**
      
       **Enter the filename: Lucerne-Reuss-river-resized-flipped.jpg**
@@ -50,3 +51,5 @@ To process with the Gnu Octave script:
       **Successfully wrote file as Lucerne-Reuss-river-resized-flipped-1600pt-width.rf32**
      
 ## Process the Image Using Gnu Radio Companion
+
+There are two Gnu Radio Companion (GRC) flowgraphs provided here. One will output the image as a complex .wav file. This file can be imported into several, different SDR programs, including SDR++, SDRangel, and SDRconnect.
