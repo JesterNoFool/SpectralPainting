@@ -6,8 +6,10 @@ Files related to creating spectrogram "spectral paintings" using Gimp, Gnu Octav
 # General Steps
 
 The general steps for creating a "spectral painting", assuming you have an image file (.jpg, .tif, .webp, .png) is as follows:
-1. Use Gimp to resize (rescale) the image and, if necessary, flip the image top to bottom. You'll need to flip the image if the spectrogram is a falling raster (scrolls downward).
-2. Use Gnu Octave to:
+1. Use Gimp to:
+   - resize (rescale) the image
+   - if necessary, flip the image top to bottom. NOTE: You'll need to flip the image if the spectrogram is a falling raster (scrolls downward).
+3. Use Gnu Octave to:
    - rescale each amplitude so that, when converted to dB, they'll be linear values
    - convert the image file into a file of real-only 32-bit floating point numbers (.rf32).
 4. Use Gnu Radio Companion to:
