@@ -66,7 +66,7 @@ There are two Gnu Radio Companion (GRC) flowgraphs provided here. One will outpu
 
 Open Gnu Radio Companion, then open the file **spectrum_painter_wav.grc**.
 * In the variable entitled, "imageWidth", change the value to the width of the image that will be processed. NOTE: This value will be in the output filename if you used the Gnu Octave script above.
-* In the variable entitled, "repeatVal", select a repeating value for each line. This accounts for the speed of the system that you will use to process the image. Those that go have faster processing will require smaller values (say 5), while slower ones will require larger values (say 20).
+* In the variable entitled, "repeatVal", select a repeating value for each line. This accounts for the speed of the system that you will use to process the image. Those that have faster processing will require smaller values (say 5), while slower ones will require larger values (say 20).
 * In the File Source, select the 32-bit floating point file (if you used the Gnu Octave script above, the file will have the extension ".rf32").
 * In the Wav File Sink, provide a directory and name for the output file.
 * **ENSURE THE "REPEAT" PROPERTY IN THE "File Source" BLOCK IS SET TO "No"!** Otherwise, the system will create a massive output file!
