@@ -33,9 +33,13 @@ The original image is 5312 pixels wide x 2988 pixels high. While this will *work
 
 ![Resized and flipped image ready for processing with Gnu Octave.](https://github.com/JesterNoFool/SpectralPainting/blob/main/Lucerne-Reuss-river-resized-flipped.jpg)
 
-## Scale Amplitudes and Output as Floating-Point Values
+## Scale Amplitudes, Convert to Black-and-White, and Output as Floating-Point Values
 
-The image will need to be imported into Gnu Radio Companion. While this program is awesome and has many capabilities, it does **not** have the ability to read in images. Instead, we'll use Gnu Octave to read in the file, scale the amplitudes so that, when displayed on the logarithmic scale of a spectral display, they'll be seen as linear, and output the image as a single vector of real, 32-bit floating point values.
+The image will need to be imported into Gnu Radio Companion. While this program is awesome and has many capabilities, it does **not** have the ability to read in images. Instead, we'll use Gnu Octave to:
+   - read in the file
+   - convert to black-and-white (if its originally a color image)
+   - scale the amplitudes so that, when displayed on the logarithmic scale of a spectral display, they'll be seen as linear
+   - output the image as a single vector of real, 32-bit floating point values
 To process with the Gnu Octave script:
    - put both the script and the image in the same directory.
    - Open Gnu Octave and, if necessary, change the working directory to that where the script and image are located.
@@ -57,9 +61,10 @@ There are two Gnu Radio Companion (GRC) flowgraphs provided here. One will outpu
 ### Store as a .WAV File
 
 Open Gnu Radio Companion, then open the file **spectrum_painter_wav.grc**.
-    - In the variable entitled, "imageWidth", change the value to the width of the image that will be processed. NOTE: This value will be in the filename if you used the Gnu Octave script above.
+    - In the variable entitled, "imageWidth", change the value to the width of the image that will be processed. NOTE: This value will be in the output filename if you used the Gnu Octave script above.
     - In the variable entitled, "repeatVal", select a repeating value for each line. This accounts for the speed of the system that you will use to process the image. Those that go have faster processing will require smaller values (say 5), while slower ones will require larger values (say 20).
     - In the File Source, select the 32-bit floating point file (if you used the Gnu Octave script above, the file will have the extension ".rf32").
     - In the Wav File Sink, provide a directory and name for the output file.
+    - **ENSURE THE "REPEAT" PROPERTY IN THE "File Source" BLOCK IS SET TO "No"!** Otherwise, the system will create a massive output file!
 
 ### Transmit using a SDR
