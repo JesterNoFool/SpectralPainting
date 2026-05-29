@@ -86,6 +86,9 @@ When you run this flowgraph, it will only run until it reaches the end of the fi
 This example flowgraph uses a Ettus Research USRP B200mini to transmit the complex samples. This can be changed to another SDR by replacing this block with the appropriate block of the SDR being used, such as a HackRF One or HackRF Pro, a BladeRF, or an Adalm-Pluto.
 
 Open Gnu Radio Companion, then open the file **spectrum_painter_usrp.grc**
+* In the variable entitled, "samp_rate", adjust the output sample rate if its needed to either increase or decrease the bandwidth of the signal.
 * In the variable entitled, "imageWidth", change the value to the width of the image that will be processed. NOTE: This value will be in the output filename if you used the Gnu Octave script above.
 * In the variable entitled, "repeatVal", select a repeating value for each line. This accounts for the speed of the system that you will use to process the image. Those that have faster processing will require smaller values (say 5), while slower ones will require larger values (say 20). This can be changed at runtime, so is not crucial initially.
 * In the File Source, select the 32-bit floating point file (if you used the Gnu Octave script above, the file will have the extension ".rf32").
+
+When the flowgraph is running, one of the displays will be a time display showing the magnitude of the complex samples. These values should be less than 1 in order to not overdrive the transmit SDR. Use the "Output Gain (dB)" value to adjust this value. If the values in the time domain are going past the top of the display (greater than 1), then lower the "Output Gain" value until the values are less than 1.
