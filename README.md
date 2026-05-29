@@ -40,7 +40,9 @@ The image will need to be imported into Gnu Radio Companion. While this program 
    - convert to black-and-white (if its originally a color image)
    - scale the amplitudes so that, when displayed on the logarithmic scale of a spectral display, they'll be seen as linear
    - output the image as a single vector of real, 32-bit floating point values
+     
 To process with the Gnu Octave script:
+
    - put both the script and the image in the same directory.
    - Open Gnu Octave and, if necessary, change the working directory to that where the script and image are located.
    - On the Gnu Octave command line, run the script: **grcImage**
