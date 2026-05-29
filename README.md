@@ -80,3 +80,12 @@ When you run this flowgraph, it will only run until it reaches the end of the fi
 ![Spectrogram painting in SDR++ of the Lucerne image from above.](https://github.com/JesterNoFool/SpectralPainting/blob/main/Lucerne-Reuss-River-20rpt-SDRpp-spectrogram-8192pt-Nuttall-window.png)
 
 ### Transmit using a SDR
+
+![Gnu Radio Companion flowgraph outputting the complex samples to a SDR.](https://github.com/JesterNoFool/SpectralPainting/blob/main/spectrum_painter_usrp_flowgraph.jpg)
+
+This example flowgraph uses a Ettus Research USRP B200mini to transmit the complex samples. This can be changed to another SDR by replacing this block with the appropriate block of the SDR being used, such as a HackRF One or HackRF Pro, a BladeRF, or an Adalm-Pluto.
+
+Open Gnu Radio Companion, then open the file **spectrum_painter_usrp.grc**
+* In the variable entitled, "imageWidth", change the value to the width of the image that will be processed. NOTE: This value will be in the output filename if you used the Gnu Octave script above.
+* In the variable entitled, "repeatVal", select a repeating value for each line. This accounts for the speed of the system that you will use to process the image. Those that have faster processing will require smaller values (say 5), while slower ones will require larger values (say 20). This can be changed at runtime, so is not crucial initially.
+* In the File Source, select the 32-bit floating point file (if you used the Gnu Octave script above, the file will have the extension ".rf32").
