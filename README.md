@@ -71,6 +71,8 @@ Open Gnu Radio Companion, then open the file **spectrum_painter_wav.grc**.
 * In the Wav File Sink, provide a directory and name for the output file.
 * **ENSURE THE "REPEAT" PROPERTY IN THE "File Source" BLOCK IS SET TO "No"!** Otherwise, the system will create a massive output file!
 
+When you run this flowgraph, it will only run until it reaches the end of the file. As it is not throttled, the system may throw a warning (which can be ignored) and quickly finish. Once done (the various displays will freeze), you can close the running flowgraph. The file will have been created. You can now import that .WAV file into any program that accepts such files, such as SDRangel, SDRconnect and SDR++, examples of which are shown below.
+
 ![Spectrogram painting in SDRangel of the Lucerne image from above.](https://github.com/JesterNoFool/SpectralPainting/blob/main/Lucerne-Reuss-River-5rpt-SDRangel-8192pt-BH-window.png)
 
 ![Spectrogram painting in SDRconnect of the Lucerne image from above.](https://github.com/JesterNoFool/SpectralPainting/blob/main/Lucerne-River-Reuss-SDRconnect-8192pt-Sin5-window-BlackWhite-palette.png)
