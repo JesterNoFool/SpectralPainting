@@ -59,7 +59,9 @@ To process with the Gnu Octave script:
 There are two Gnu Radio Companion (GRC) flowgraphs provided here. One will output the image as a complex .wav file. This file can be imported into several, different SDR programs, including SDR++, SDRangel, and SDRconnect. The other will allow for transmission using a transmit-capable SDR, such as a HackRF One or HackRF Pro, an Adalm Pluto, an Ettus Research USRP, or a BladeRF.
 
 ### Store as a .WAV File
-    
+
+![Gnu Radio Companion flowgraph designed to take in a file of real, 32-bit floating point numbers ("floats") and turn them into spectral data that will be output as a complex samples stored in a .WAV file.](https://github.com/JesterNoFool/SpectralPainting/blob/main/spectrum_painter_wav.jpg)
+
 Open Gnu Radio Companion, then open the file **spectrum_painter_wav.grc**.
 * In the variable entitled, "imageWidth", change the value to the width of the image that will be processed. NOTE: This value will be in the output filename if you used the Gnu Octave script above.
 * In the variable entitled, "repeatVal", select a repeating value for each line. This accounts for the speed of the system that you will use to process the image. Those that go have faster processing will require smaller values (say 5), while slower ones will require larger values (say 20).
