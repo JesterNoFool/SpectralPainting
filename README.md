@@ -81,7 +81,7 @@ When you run this flowgraph, it will only run until it reaches the end of the fi
 
 ### Transmit using a SDR
 
-![Gnu Radio Companion flowgraph outputting the complex samples to a SDR.](https://github.com/JesterNoFool/SpectralPainting/blob/main/spectrum_painter_usrp_flowgraph.jpg)
+![Gnu Radio Companion flowgraph outputting the complex samples to a SDR.](https://github.com/JesterNoFool/SpectralPainting/blob/main/spectrum_painter_usrp_flowgraph.jpg))
 
 This example flowgraph uses a Ettus Research USRP B200mini to transmit the complex samples. This can be changed to another SDR by replacing this block with the appropriate block of the SDR being used, such as a HackRF One or HackRF Pro, a BladeRF, or an Adalm-Pluto.
 
