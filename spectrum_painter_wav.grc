@@ -1,0 +1,696 @@
+options:
+  parameters:
+    author: Gary Schafer
+    catch_exceptions: 'True'
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: ''
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: spectrum_painter
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: ''
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: prompt
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: Spectrum Painter as .WAV File
+    window_size: (1000,1000)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: fft_size
+  id: variable
+  parameters:
+    comment: 2**(two_power+1)
+    value: 2**(two_power+1)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [448, 40.0]
+    rotation: 0
+    state: enabled
+- name: imageWidth
+  id: variable
+  parameters:
+    comment: ''
+    value: '1600'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [304, 40.0]
+    rotation: 0
+    state: enabled
+- name: outputGain
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: Output Gain (dB)
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '-100'
+    step: '0.1'
+    stop: '20'
+    value: '-40'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [848, 768.0]
+    rotation: 0
+    state: enabled
+- name: repeatVal
+  id: variable
+  parameters:
+    comment: ''
+    value: '5'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [264, 584.0]
+    rotation: 0
+    state: enabled
+- name: samp_rate
+  id: variable
+  parameters:
+    comment: ''
+    value: 1e6
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [184, 12]
+    rotation: 0
+    state: enabled
+- name: two_power
+  id: variable
+  parameters:
+    comment: ''
+    value: int(np.log(imageWidth)/np.log(2))
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [448, 136.0]
+    rotation: 0
+    state: enabled
+- name: zeropad_left
+  id: variable
+  parameters:
+    comment: ''
+    value: int((fft_size-imageWidth)/2)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [568, 40.0]
+    rotation: 0
+    state: enabled
+- name: zeropad_right
+  id: variable
+  parameters:
+    comment: ''
+    value: int(fft_size-imageWidth-zeropad_left)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [688, 40.0]
+    rotation: 0
+    state: enabled
+- name: analog_phase_modulator_fc_0
+  id: analog_phase_modulator_fc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    sensitivity: np.pi/64
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [504, 392.0]
+    rotation: 0
+    state: enabled
+- name: blocks_complex_to_float_0
+  id: blocks_complex_to_float
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1072, 680.0]
+    rotation: 0
+    state: enabled
+- name: blocks_file_source_0
+  id: blocks_file_source
+  parameters:
+    affinity: ''
+    alias: ''
+    begin_tag: pmt.PMT_NIL
+    comment: ''
+    file: Lucerne-Reuss-river-resized-flipped-1600pt-width.rf32
+    length: '0'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    offset: '0'
+    repeat: 'False'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [32, 208.0]
+    rotation: 0
+    state: enabled
+- name: blocks_float_to_complex_0
+  id: blocks_float_to_complex
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [376, 248.0]
+    rotation: 0
+    state: enabled
+- name: blocks_multiply_const_vxx_0
+  id: blocks_multiply_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: 10**(outputGain/20)
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [864, 688.0]
+    rotation: 0
+    state: enabled
+- name: blocks_multiply_xx_0
+  id: blocks_multiply_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: 'Randomize the
+
+      phase of each
+
+      sample.'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '2'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [696, 264.0]
+    rotation: 0
+    state: enabled
+- name: blocks_null_source_0
+  id: blocks_null_source
+  parameters:
+    affinity: ''
+    alias: ''
+    bus_structure_source: '[[0,],]'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_outputs: '1'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [848, 416.0]
+    rotation: 180
+    state: enabled
+- name: blocks_null_source_0_0
+  id: blocks_null_source
+  parameters:
+    affinity: ''
+    alias: ''
+    bus_structure_source: '[[0,],]'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_outputs: '1'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [848, 200.0]
+    rotation: 180
+    state: enabled
+- name: blocks_pack_k_bits_bb_0
+  id: blocks_pack_k_bits_bb
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    k: '7'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [192, 392.0]
+    rotation: 0
+    state: enabled
+- name: blocks_repeat_0
+  id: blocks_repeat
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: 'This increases the amount of time
+
+      required to transmit the image
+
+      for those receive systems that are
+
+      slower.'
+    interp: repeatVal
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: complex
+    vlen: fft_size
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [240, 680.0]
+    rotation: 0
+    state: enabled
+- name: blocks_stream_mux_0
+  id: blocks_stream_mux
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: 'Zeropad the ends of the
+
+      spectrum to provide a
+
+      power-of-2 length.'
+    lengths: (zeropad_left,imageWidth,zeropad_right)
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '3'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [848, 248.0]
+    rotation: 0
+    state: enabled
+- name: blocks_stream_to_vector_0
+  id: blocks_stream_to_vector
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_items: fft_size
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1048, 280.0]
+    rotation: 0
+    state: enabled
+- name: blocks_uchar_to_float_0
+  id: blocks_uchar_to_float
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [336, 400.0]
+    rotation: 0
+    state: enabled
+- name: blocks_vector_to_stream_1
+  id: blocks_vector_to_stream
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_items: fft_size
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [656, 696.0]
+    rotation: 0
+    state: enabled
+- name: blocks_wavfile_sink_0
+  id: blocks_wavfile_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    append: 'False'
+    bits_per_sample1: FORMAT_PCM_16
+    bits_per_sample2: FORMAT_PCM_16
+    bits_per_sample3: FORMAT_VORBIS
+    bits_per_sample4: FORMAT_PCM_16
+    comment: ''
+    file: Lucerne_Reuss_River_flipped_1M0FS-2048fft-5repeat.wav
+    format: FORMAT_WAV
+    nchan: '2'
+    samp_rate: int(samp_rate)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1256, 656.0]
+    rotation: 0
+    state: enabled
+- name: digital_glfsr_source_x_0
+  id: digital_glfsr_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: 'This will create a pseudorandom
+
+      bitstream that will be used to
+
+      create a randomized phase for
+
+      each spectral point.'
+    degree: '31'
+    mask: 2**30+2**24
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    repeat: 'True'
+    seed: '1'
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [40, 368.0]
+    rotation: 0
+    state: enabled
+- name: fft_vxx_0
+  id: fft_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: 'Perform the inverse FFT on
+
+      each line of the image.'
+    fft_size: fft_size
+    forward: 'False'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nthreads: '1'
+    shift: 'True'
+    type: complex
+    window: '[1,]*fft_size'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [432, 656.0]
+    rotation: 0
+    state: enabled
+- name: import_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: import numpy as np
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [192, 112.0]
+    rotation: 0
+    state: enabled
+- name: qtgui_time_sink_x_0
+  id: qtgui_time_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: blue
+    color10: dark blue
+    color2: red
+    color3: green
+    color4: black
+    color5: cyan
+    color6: magenta
+    color7: yellow
+    color8: dark red
+    color9: dark green
+    comment: ''
+    ctrlpanel: 'False'
+    entags: 'True'
+    grid: 'False'
+    gui_hint: ''
+    label1: Signal 1
+    label10: Signal 10
+    label2: Signal 2
+    label3: Signal 3
+    label4: Signal 4
+    label5: Signal 5
+    label6: Signal 6
+    label7: Signal 7
+    label8: Signal 8
+    label9: Signal 9
+    legend: 'True'
+    marker1: '-1'
+    marker10: '-1'
+    marker2: '-1'
+    marker3: '-1'
+    marker4: '-1'
+    marker5: '-1'
+    marker6: '-1'
+    marker7: '-1'
+    marker8: '-1'
+    marker9: '-1'
+    name: '""'
+    nconnections: '1'
+    size: '20000'
+    srate: samp_rate
+    stemplot: 'False'
+    style1: '1'
+    style10: '1'
+    style2: '1'
+    style3: '1'
+    style4: '1'
+    style5: '1'
+    style6: '1'
+    style7: '1'
+    style8: '1'
+    style9: '1'
+    tr_chan: '0'
+    tr_delay: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: complex
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    ylabel: Amplitude
+    ymax: '1'
+    ymin: '-1'
+    yunit: '""'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [840, 576.0]
+    rotation: 180
+    state: enabled
+- name: qtgui_waterfall_sink_x_0
+  id: qtgui_waterfall_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    axislabels: 'True'
+    bw: samp_rate
+    color1: '3'
+    color10: '0'
+    color2: '0'
+    color3: '0'
+    color4: '0'
+    color5: '0'
+    color6: '0'
+    color7: '0'
+    color8: '0'
+    color9: '0'
+    comment: ''
+    fc: '0'
+    fftsize: fft_size
+    freqhalf: 'True'
+    grid: 'False'
+    gui_hint: ''
+    int_max: '0'
+    int_min: '-60'
+    label1: ''
+    label10: ''
+    label2: ''
+    label3: ''
+    label4: ''
+    label5: ''
+    label6: ''
+    label7: ''
+    label8: ''
+    label9: ''
+    legend: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: '""'
+    nconnections: '1'
+    showports: 'False'
+    type: complex
+    update_time: '0.01'
+    wintype: window.WIN_BLACKMAN_hARRIS
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [640, 768.0]
+    rotation: 180
+    state: enabled
+- name: virtual_sink_0
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: vectored
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1224, 272.0]
+    rotation: 0
+    state: enabled
+- name: virtual_source_0
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: vectored
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [40, 688.0]
+    rotation: 0
+    state: enabled
+
+connections:
+- [analog_phase_modulator_fc_0, '0', blocks_multiply_xx_0, '1']
+- [blocks_complex_to_float_0, '0', blocks_wavfile_sink_0, '0']
+- [blocks_complex_to_float_0, '1', blocks_wavfile_sink_0, '1']
+- [blocks_file_source_0, '0', blocks_float_to_complex_0, '0']
+- [blocks_float_to_complex_0, '0', blocks_multiply_xx_0, '0']
+- [blocks_multiply_const_vxx_0, '0', blocks_complex_to_float_0, '0']
+- [blocks_multiply_const_vxx_0, '0', qtgui_time_sink_x_0, '0']
+- [blocks_multiply_xx_0, '0', blocks_stream_mux_0, '1']
+- [blocks_null_source_0, '0', blocks_stream_mux_0, '2']
+- [blocks_null_source_0_0, '0', blocks_stream_mux_0, '0']
+- [blocks_pack_k_bits_bb_0, '0', blocks_uchar_to_float_0, '0']
+- [blocks_repeat_0, '0', fft_vxx_0, '0']
+- [blocks_stream_mux_0, '0', blocks_stream_to_vector_0, '0']
+- [blocks_stream_to_vector_0, '0', virtual_sink_0, '0']
+- [blocks_uchar_to_float_0, '0', analog_phase_modulator_fc_0, '0']
+- [blocks_vector_to_stream_1, '0', blocks_multiply_const_vxx_0, '0']
+- [blocks_vector_to_stream_1, '0', qtgui_waterfall_sink_x_0, '0']
+- [digital_glfsr_source_x_0, '0', blocks_pack_k_bits_bb_0, '0']
+- [fft_vxx_0, '0', blocks_vector_to_stream_1, '0']
+- [virtual_source_0, '0', blocks_repeat_0, '0']
+
+metadata:
+  file_format: 1
+  grc_version: 3.10.9.2
