@@ -1,5 +1,5 @@
 # SpectralPainting
-Files and instructions related to creating spectrogram "spectral paintings" using open-source tools.
+This page is dedicated to providing files and instructions related to creating spectrogram "spectral paintings" using open-source tools. It will accompany a Youtube video (link TBD) that will walk the user through the theory behind how "spectral painting" works. This will provide similar functionality as [gr-paint](https://github.com/drmpeg/gr-paint), but only uses common blocks in Gnu Radio Companion.
 
 ![Spectrogram painting of Renoir's "Le Pont-Neuf", painted originally in 1872.](https://github.com/JesterNoFool/SpectralPainting/blob/main/Renoir-Le-Pont-Neuf-spectrogram-16384pt-Nuttall-window.png)
 
