@@ -51,11 +51,11 @@ To process with the Gnu Octave script:
    - EX (from the Gnu Octave command line):
 
       ```
-      grcImage
+      >>grcImage
      
-      Enter the filename: Lucerne-Reuss-river-resized-flipped.jpg
+      >>Enter the filename: Lucerne-Reuss-river-resized-flipped.jpg
 
-      Successfully wrote file as Lucerne-Reuss-river-resized-flipped-1600pt-width.rf32
+      >>Successfully wrote file as Lucerne-Reuss-river-resized-flipped-1600pt-width.rf32
       ```
       
 ## Process the Image Using Gnu Radio Companion
