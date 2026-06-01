@@ -1,6 +1,6 @@
 options:
   parameters:
-    author: Gary Schafer
+    author: Gary Schafer / Paul Maine
     catch_exceptions: 'True'
     category: '[GRC Hier Blocks]'
     cmake_opt: ''
@@ -49,7 +49,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '1600'
+    value: '600'
   states:
     bus_sink: false
     bus_source: false
@@ -57,25 +57,64 @@ blocks:
     coordinate: [304, 40.0]
     rotation: 0
     state: enabled
-- name: outputGain
-  id: variable_qtgui_range
+- name: input_file
+  id: variable
   parameters:
-    comment: ''
-    gui_hint: ''
-    label: Output Gain (dB)
-    min_len: '200'
-    orient: QtCore.Qt.Horizontal
-    rangeType: float
-    start: '-100'
-    step: '0.1'
-    stop: '20'
-    value: '-40'
-    widget: counter_slider
+    comment: 'Put the input filename (including the
+
+      .rf32 extension) here. Do not forget
+
+      to put double quotes at each end:
+
+      "yourInputFileHere.rf32"'
+    value: '"Eggbert_600_flipped-600pt-width.rf32"'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [848, 768.0]
+    coordinate: [1032, 24.0]
+    rotation: 0
+    state: enabled
+- name: input_folder
+  id: variable
+  parameters:
+    comment: 'Put in the absolute directory path
+
+      for the input and output files here:
+
+      "/your/folder/here/"
+
+      Do not forget to put the quotes at
+
+      each end.'
+    value: '"/home/gary/Videos/Youtube/Spectrum-painting/"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [816, 24.0]
+    rotation: 0
+    state: enabled
+- name: outputGain
+  id: variable
+  parameters:
+    comment: 'This will set the level of the
+
+      output signal. The signal level
+
+      should be such that it does
+
+      not exceed +1. If it does,
+
+      reduce the level until the
+
+      output is less than 1.'
+    value: '-40'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [864, 760.0]
     rotation: 0
     state: enabled
 - name: repeatVal
@@ -170,6 +209,22 @@ blocks:
     coordinate: [1072, 680.0]
     rotation: 0
     state: enabled
+- name: blocks_complex_to_mag_0
+  id: blocks_complex_to_mag
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [856, 584.0]
+    rotation: 180
+    state: enabled
 - name: blocks_file_source_0
   id: blocks_file_source
   parameters:
@@ -177,7 +232,7 @@ blocks:
     alias: ''
     begin_tag: pmt.PMT_NIL
     comment: ''
-    file: Lucerne-Reuss-river-resized-flipped-1600pt-width.rf32
+    file: input_folder+input_file
     length: '0'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -410,8 +465,16 @@ blocks:
     bits_per_sample2: FORMAT_PCM_16
     bits_per_sample3: FORMAT_VORBIS
     bits_per_sample4: FORMAT_PCM_16
-    comment: ''
-    file: Lucerne_Reuss_River_flipped_1M0FS-2048fft-5repeat.wav
+    comment: 'The output file will be automatically
+
+      set to be stored in the input_folder
+
+      and using the same prefix as the
+
+      input_file, but with the ".wav"
+
+      extension.'
+    file: input_folder+__import__('os').path.splitext(input_file)[0]+".wav"
     format: FORMAT_WAV
     nchan: '2'
     samp_rate: int(samp_rate)
@@ -558,8 +621,8 @@ blocks:
     tr_mode: qtgui.TRIG_MODE_FREE
     tr_slope: qtgui.TRIG_SLOPE_POS
     tr_tag: '""'
-    type: complex
-    update_time: '0.10'
+    type: float
+    update_time: '0.001'
     width1: '1'
     width10: '1'
     width2: '1'
@@ -572,13 +635,13 @@ blocks:
     width9: '1'
     ylabel: Amplitude
     ymax: '1'
-    ymin: '-1'
+    ymin: '0'
     yunit: '""'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [840, 576.0]
+    coordinate: [648, 560.0]
     rotation: 180
     state: enabled
 - name: qtgui_waterfall_sink_x_0
@@ -673,10 +736,11 @@ connections:
 - [analog_phase_modulator_fc_0, '0', blocks_multiply_xx_0, '1']
 - [blocks_complex_to_float_0, '0', blocks_wavfile_sink_0, '0']
 - [blocks_complex_to_float_0, '1', blocks_wavfile_sink_0, '1']
+- [blocks_complex_to_mag_0, '0', qtgui_time_sink_x_0, '0']
 - [blocks_file_source_0, '0', blocks_float_to_complex_0, '0']
 - [blocks_float_to_complex_0, '0', blocks_multiply_xx_0, '0']
 - [blocks_multiply_const_vxx_0, '0', blocks_complex_to_float_0, '0']
-- [blocks_multiply_const_vxx_0, '0', qtgui_time_sink_x_0, '0']
+- [blocks_multiply_const_vxx_0, '0', blocks_complex_to_mag_0, '0']
 - [blocks_multiply_xx_0, '0', blocks_stream_mux_0, '1']
 - [blocks_null_source_0, '0', blocks_stream_mux_0, '2']
 - [blocks_null_source_0_0, '0', blocks_stream_mux_0, '0']
