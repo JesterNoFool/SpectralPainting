@@ -64,7 +64,7 @@ There are two Gnu Radio Companion (GRC) flowgraphs provided here. One will outpu
 
 ### Store as a .WAV File
 
-![Gnu Radio Companion flowgraph designed to take in a file of real, 32-bit floating point numbers ("floats") and turn them into spectral data that will be output as a complex samples stored in a .WAV file.](https://github.com/JesterNoFool/SpectralPainting/blob/main/spectrum_painter_wav.jpg)
+![Gnu Radio Companion flowgraph designed to take in a file of real, 32-bit floating point numbers ("floats") and turn them into spectral data that will be output as a complex samples stored in a .WAV file.](https://github.com/JesterNoFool/SpectralPainting/blob/main/spectrum_painter_wav_flowgraph.jpg)
 
 Open Gnu Radio Companion, then open the file **spectrum_painter_wav.grc**.
 * In the variable entitled, "imageWidth", change the value to the width of the image that will be processed. NOTE: This value will be in the output filename if you used the Gnu Octave script above.
