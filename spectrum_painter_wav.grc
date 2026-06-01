@@ -66,33 +66,13 @@ blocks:
 
       to put double quotes at each end:
 
-      "yourInputFileHere.rf32"'
-    value: '"Eggbert_600_flipped-600pt-width.rf32"'
+      "/your/file/folder/here/yourInputFileHere.rf32"'
+    value: '"/home/gary/Videos/Youtube/Spectrum-painting/Eggbert_600_flipped-600pt-width.rf32"'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1032, 24.0]
-    rotation: 0
-    state: enabled
-- name: input_folder
-  id: variable
-  parameters:
-    comment: 'Put in the absolute directory path
-
-      for the input and output files here:
-
-      "/your/folder/here/"
-
-      Do not forget to put the quotes at
-
-      each end.'
-    value: '"/home/gary/Videos/Youtube/Spectrum-painting/"'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [816, 24.0]
+    coordinate: [840, 32.0]
     rotation: 0
     state: enabled
 - name: outputGain
@@ -474,7 +454,7 @@ blocks:
       input_file, but with the ".wav"
 
       extension.'
-    file: input_folder+__import__('os').path.splitext(input_file)[0]+".wav"
+    file: __import__('os').path.splitext(input_file)[0]+".wav"
     format: FORMAT_WAV
     nchan: '2'
     samp_rate: int(samp_rate)
