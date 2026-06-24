@@ -70,7 +70,7 @@ The ".raw" file created by Gimp can be imported directly into the Gnu Radio Comp
 
 The provided Gnu Radio Companion flowgraph will:
 
-   - read in the file
+   - read in the .raw or .ru8 file created using Gimp or Gnu Octave (see steps above).
    - adjust the amplitudes (pre-warp) so that they are "linear" on the final spectrogram
    - randomize the phases of each frequency bin
    - set each line to be a power-of-2 length by zeropadding each end of a line. NOTE: This also centers the image in the spectral display.
