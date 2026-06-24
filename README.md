@@ -35,6 +35,14 @@ The original image is 5312 pixels wide x 2988 pixels high. While this will *work
    - Place the image created using imagemagick, and the Gnu Octave script "grcImage", into the Gnu Octave working directory. In Gnu Octave, run the script. It will ask for the filename. Type (or copy-and-paste) the filename. It will automatically convert the image to grayscale and output the image as a 1D array of values representing each line of the image. The values will be 8-bit unsigned integers (which is why the extension has been added as ".ru8").
    - NOTE: You can also use Imagemagick to just resize the image, then use the Gnu Octave script "grcImageFlip" to convert the image to grayscale, flip it vertically, and export it as the 8-bit unsigned integers.
 
+  ```
+      >>grcImage
+     
+      >>Enter the filename: Lucerne-Reuss-river-resized-flipped.jpg
+
+      >>Successfully wrote file as Lucerne-Reuss-river-resized-flipped-1600pt-width.ru8
+      ```
+
 The ".ru8" file created by Gnu Octave can be imported directly into the Gnu Radio Companion flowgraph "image2spectrum.grc" to create the spectral painting.
 
 ## Using ffmpeg & Gnu Octave
@@ -44,8 +52,6 @@ The ".ru8" file created by Gnu Octave can be imported directly into the Gnu Radi
    - NOTE: You can also use ffmpeg to just resize the image, then use the Gnu Octave script "grcImageFlip" to convert the image to grayscale, flip it vertically, and export it as the 8-bit unsigned integers.
 
 The ".ru8" file created by Gnu Octave can be imported directly into the Gnu Radio Companion flowgraph "image2spectrum.grc" to create the spectral painting.
-
-![Resized and flipped image ready for processing with Gnu Octave.](https://github.com/JesterNoFool/SpectralPainting/blob/main/Lucerne-Reuss-river-resized-flipped.jpg)
 
 ## Use Gimp
 
@@ -79,13 +85,7 @@ To process with the Gnu Octave script:
    - Gnu Octave will process the image and output the name of the real, 32-bit floating point file containing the samples ready for processing with Gnu Radio Companion.
    - EX (from the Gnu Octave command line):
 
-      ```
-      >>grcImage
-     
-      >>Enter the filename: Lucerne-Reuss-river-resized-flipped.jpg
-
-      >>Successfully wrote file as Lucerne-Reuss-river-resized-flipped-1600pt-width.rf32
-      ```
+    
       
 ## Process the Image Using Gnu Radio Companion
 
