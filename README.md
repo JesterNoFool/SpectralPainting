@@ -55,7 +55,7 @@ The ".ru8" file created by Gnu Octave can be imported directly into the Gnu Radi
 
 ## Use Gimp
 
-Gimp allows for resizing the image, flipping vertically, converting to grayscale, and exporting in a format that Gnu Radio can directly import. Open Gimp and perform whichever of the following steps are necessary:
+Gimp allows for everything needed to create a file that can be imported into Gnu Radio Companion. This includes resizing the image, flipping vertically, converting to grayscale, and exporting in a format that Gnu Radio can directly import. Open Gimp and perform whichever of the following steps are necessary:
 
    - OPTIONAL: Resize the image. Image -> Scale Image -> adjust the needed sizes (width, height, or a combination of the two) -> Click on the "Scale" button.
    - MANDATORY: Convert to grayscale. Image -> Mode -> Grayscale.
@@ -66,60 +66,37 @@ The ".raw" file created by Gimp can be imported directly into the Gnu Radio Comp
 
 # Use Gnu Radio Companion to create the spectral painting
 
+The provided Gnu Radio Companion flowgraph will:
 
-
-## Scale Amplitudes, Convert to Black-and-White, and Output as Floating-Point Values
-
-The image will need to be imported into Gnu Radio Companion. While this program is awesome and has many capabilities, it does **not** have the ability to read in images. Instead, we'll use Gnu Octave to:
    - read in the file
-   - convert to black-and-white (if its originally a color image)
-   - scale the amplitudes so that, when displayed on the logarithmic scale of a spectral display, they'll be seen as linear
-   - output the image as a single vector of real, 32-bit floating point values
-     
-To process with the Gnu Octave script:
+   - adjust the amplitudes (pre-warp) so that they are "linear" on the final spectrogram
+   - randomize the phases of each frequency bin
+   - set each line to be a power-of-2 length by zeropadding each end of a line. NOTE: This also centers the image in the spectral display.
+   - repeat lines if needed by the receiving spectrogram. NOTE: This may be needed if the receiving spectrogram has a slow update rate. Otherwise, the image will be "squished" vertically.
+   - calculate the inverse FFT (IFFT), which transforms the frequency domain amplitudes and phases of each image line into the time domain.
+   - output to a file or SDR.
 
-   - put both the script and the image in the same directory.
-   - Open Gnu Octave and, if necessary, change the working directory to that where the script and image are located.
-   - On the Gnu Octave command line, run the script: **grcImage**
-   - When prompted, enter the name of the file.
-   - Gnu Octave will process the image and output the name of the real, 32-bit floating point file containing the samples ready for processing with Gnu Radio Companion.
-   - EX (from the Gnu Octave command line):
+In Gnu Radio Companion, open the flowgraph "image2spectrum.grc".
 
-    
-      
-## Process the Image Using Gnu Radio Companion
+   - In the File Source block, select the desired file (the .ru8 or .raw created above).
+   - Set the image width manually by entering the width of the image, in pixels, in the "image_width" variable block.
+   - If desired, adjust the output dynamic range (in dB) using the "dr" variable. The default is 40, but you may want to make this larger if you have a transmit SDR capable of handling more than 8 bits in the DAC.
+   - If the file will be transmitted using a SDR:
+   
+       - connect the necessary SDR sink block (ex: Soapy HackRF Sink, osmocom Sink) to the output of the "Vector to Stream" block and delete or disable the "Throttle" block.
+       - adjust the sample rate, if needed.
+       - in the "File Source" block, set the "Repeat" value to "Yes".
+       - run the flowgraph. If the image on the receive end is stretched vertically, lower the "Repeat" value and rerun the flowgraph. If it is squished (too short) vertically, raise the "Repeat" value and rerun.
 
-There are two Gnu Radio Companion (GRC) flowgraphs provided here. One will output the image as a complex .wav file. This file can be imported into several, different SDR programs, including SDR++, SDRangel, and SDRconnect. The other will allow for transmission using a transmit-capable SDR, such as a HackRF One or HackRF Pro, an Adalm Pluto, an Ettus Research USRP, or a BladeRF.
+   - If the file will be stored as a .WAV file:
 
-### Store as a .WAV File
-
-![Gnu Radio Companion flowgraph designed to take in a file of real, 32-bit floating point numbers ("floats") and turn them into spectral data that will be output as a complex samples stored in a .WAV file.](https://github.com/JesterNoFool/SpectralPainting/blob/main/spectrum_painter_wav_flowgraph.jpg)
-
-Open Gnu Radio Companion, then open the file **spectrum_painter_wav.grc**.
-* In the variable entitled, "imageWidth", change the value to the width of the image that will be processed. NOTE: This value will be in the output filename if you used the Gnu Octave script above.
-* In the variable entitled, "repeatVal", select a repeating value for each line. This accounts for the speed of the system that you will use to process the image. Those that have faster processing will require smaller values (say 5), while slower ones will require larger values (say 20).
-* In the File Source, select the 32-bit floating point file (if you used the Gnu Octave script above, the file will have the extension ".rf32").
-* In the Wav File Sink, provide a directory and name for the output file.
-* **ENSURE THE "REPEAT" PROPERTY IN THE "File Source" BLOCK IS SET TO "No"!** Otherwise, the system will create a massive output file!
-
-When you run this flowgraph, it will only run until it reaches the end of the file. As it is not throttled, the system may throw a warning (which can be ignored) and quickly finish. Once done (the various displays will freeze), you can close the running flowgraph. The file will have been created. You can now import that .WAV file into any program that accepts such files, such as SDRangel, SDRconnect and SDR++, examples of which are shown below.
+      - Enable the "Complex to Float" and "WAV File Sink" blocks.
+      - Enter the desired name in the "WAV File Sink" properties, ensuring that the extension ".wav" is on the end of the filename.
+      - In the "File Source" block, ensure that the "Repeat" value is set to "No".
+      - Run the flowgraph. The output ".wav" file can now be imported directly into one of several programs, including SDRconnect, SDR++, and SDRangel, as demonstrated below.
 
 ![Spectrogram painting in SDRangel of the Lucerne image from above.](https://github.com/JesterNoFool/SpectralPainting/blob/main/Lucerne-Reuss-River-5rpt-SDRangel-8192pt-BH-window.png)
 
 ![Spectrogram painting in SDRconnect of the Lucerne image from above.](https://github.com/JesterNoFool/SpectralPainting/blob/main/Lucerne-River-Reuss-SDRconnect-8192pt-Sin5-window-BlackWhite-palette.png)
 
 ![Spectrogram painting in SDR++ of the Lucerne image from above.](https://github.com/JesterNoFool/SpectralPainting/blob/main/Lucerne-Reuss-River-20rpt-SDRpp-spectrogram-8192pt-Nuttall-window.png)
-
-### Transmit using a SDR
-
-![Gnu Radio Companion flowgraph outputting the complex samples to a SDR.](https://github.com/JesterNoFool/SpectralPainting/blob/main/spectrum_painter_usrp_flowgraph.jpg)
-
-This example flowgraph uses a Ettus Research USRP B200mini to transmit the complex samples. This can be changed to another SDR by replacing this block with the appropriate block of the SDR being used, such as a HackRF One or HackRF Pro, a BladeRF, or an Adalm-Pluto.
-
-Open Gnu Radio Companion, then open the file **spectrum_painter_usrp.grc**
-* In the variable entitled, "samp_rate", adjust the output sample rate if its needed to either increase or decrease the bandwidth of the signal.
-* In the variable entitled, "imageWidth", change the value to the width of the image that will be processed. NOTE: This value will be in the output filename if you used the Gnu Octave script above.
-* In the variable entitled, "repeatVal", select a repeating value for each line. This accounts for the speed of the system that you will use to process the image. Those that have faster processing will require smaller values (say 5), while slower ones will require larger values (say 20). This can be changed at runtime, so is not crucial initially.
-* In the File Source, select the 32-bit floating point file (if you used the Gnu Octave script above, the file will have the extension ".rf32").
-
-When the flowgraph is running, one of the displays will be a time display showing the magnitude of the complex samples. These values should be less than 1 in order to not overdrive the transmit SDR. Use the "Output Gain (dB)" value to adjust this value. If the values in the time domain are going past the top of the display (greater than 1), then lower the "Output Gain" value until the values are less than 1.
