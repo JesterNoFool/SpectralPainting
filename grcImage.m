@@ -8,10 +8,10 @@
 % move or copy the file into the same directory as this program,
 % then run this program. Enter the name of the image file (including
 % the extension) when prompted and press <Enter>. The program will
-% read in the image file, scale each value so that when those
-% values are converted into logarithmic amplitude values (as the
-% vast majority of spectral displays do), and output the values
-% to a file as real, 32-bit floating point numbers.
+% read in the image file, convert to grayscale (if its color),and
+% output the values to a file as 8-bit unsigned integer numbers
+% (i.e. effectively convert the file from whatever format to a 
+% "raw" format).
 
 clear all;
 close all;
@@ -25,15 +25,6 @@ sz=size(myImage);
 numLines=sz(1); % Image height
 imWidth=sz(2);  % Image width
 
-% The following line determines the maximum dynamic range
-% of the output spectrum
-dr=40; % Dynamic range of signal, in dB.
-max_lin=10^(dr/20);     % Calculate the maximum linear value
-                        % based on the desired dynamic range.
-step_size=10^(dr/5100); % Calculate the step size based on 
-                        % desired range as well as the typical
-                        % number of bits (8-bits per color)
-
 % If the image is color (which requires three layers), the
 % following for-loop will convert it to a black-and-white
 % image by averaging the three colors together.
@@ -46,11 +37,6 @@ if(length(sz)==3)  % If there are three layers, then its color
         myImage=(R+G+B)/3;  % Average the three layers together
     endif
 endif
-
-% Transform (pre-distort) the image grayscale values so that when
-% they're converted to dB, the values will essentially be linear.
-
-myImage_log=((step_size.^(myImage))/max_lin);
 
 % Create the final filename which will contain the prefix of the
 % original file as well as the width of the final file.
@@ -77,13 +63,13 @@ else
     filenameOut=filename(1:flen); % Pull out the filename prefix
 endif
 
-filenameOut=[filenameOut "-" num2str(imWidth) "pt-width.rf32"];
+filenameOut=[filenameOut "-" num2str(imWidth) "pt-width.ru8"];
 
 % Write the file out as real 32-bit floating point numbers (.rf32)
 
 fid=fopen(filenameOut,"w");  % Open the file
 for(ii=1:numLines)
-    fwrite(fid,myImage_log(ii,:),'float');  % Loop through each line in order
+    fwrite(fid,myImage(ii,:),'uint8');  % Loop through each line in order
 endfor
 fclose(fid);  % Close the file and done!
 printf(["Successfully wrote file as " filenameOut "\n"]);
