@@ -10,10 +10,11 @@ The general steps for creating a "spectral painting", assuming you have an image
    - Imagemagick: From the command line, "convert inputfile.jpg -resize 1600x -flip outputfile.jpg"
    - ffmpeg: From the command line, "ffmpeg -i inputfile.jpg -filter:v "vflip, scale=1600:-1" outputfile.jpg"
    - Gimp: Import the image, scale the image (Image -> Scale Image), and flip (if necessary, Image -> Transform -> Flip Vertically).
-3. Use script Gnu Octave above to:
-   - rescale each amplitude so that, when converted to dB, they'll be linear values
-   - convert the image file into a file of real-only 32-bit floating point numbers (.rf32).
-4. Use the Gnu Radio Companion flowgraph to:
+2. Transform the image into a grayscale and export it as a straight "raw" file (8-bit unsigned integers) that can be imported directly into Gnu Radio Companion. The methods to do this are:
+   - Use Gimp to both convert to grayscale (Image -> Mode -> Grayscale). Then export as a ".raw" file (File -> Export As... -> Change the extension on the filename to ".raw").
+   - Use either of the Gnu Octave scripts provided (grcImage or grcImageFlip) to both convert to grayscale and export as 8-bit unsigned integers (adds a ".ru8" extension).
+3. Use the Gnu Radio Companion flowgraph to:
+   - adjust (pre-distort) the amplitudes that, when displayed on the log scale of a spectral display, the image values will effectively be linear.
    - randomize the phase of each frequency point (bin)
    - calculate the inverse FFT (convert from frequency domain to time domain) of each line
    - output the complex samples to a file or SDR for transmission
@@ -24,14 +25,42 @@ We'll use this image taken in Lucerne, Switzerland, to demonstrate how to create
 
 ![Image showing a narrow river with buildings on either side. A church is on the right bank in the background, and the sky is blue with some fluffy clouds visible.](https://github.com/JesterNoFool/SpectralPainting/blob/main/Lucerne-Reuss-river.jpg)
 
-## Resizing and Flipping
+# Resize the image, convert to grayscale, flip vertically, convert to 8-bit unsigned integer format
 
-The original image is 5312 pixels wide x 2988 pixels high. While this will *work*, it's probably a lot larger image than is needed, even for a decent image. Further, we're going to test it on several SDR programs, all of which use a falling waterfall. This means we'll need to flip the image (unless you enjoy looking at images upside-down). There are several ways to accomplish these tasks. We'll cover three, different methods:
-   - Use imagemagick. If you have imagemagick installed on your system, you can use a command line statement to perform both the resizing and the image flip. In the command line, navigate to the directory containing the image and use the following command to set the image to a 1600 pixel width, have the system automatically set the height to maintain the same aspect ratio, and flip the image: **convert inputfile.jpg -resize 1600x -flip outputfile.jpg**
-   - Use ffmpeg. As with imagemagick, ffmpeg can both resize and flip the image, all from one statement on the command line. Again from command line, navigate to the directory containing the image, then use the following command to resize to a width of 1600 pixels, automatically set the height to maintain the same aspect ratio, and flip the image: **ffmpeg -i inputfile.jpg -filter:v "vflip, scale=1600:-1" outputfile.jpg**
-   - Use Gimp. Gimp is an open-source image editing program. If you have it installed, open Gimp, then open or import the image into it. To change the size, select Image -> Scale Image. Set the width to that desired (such as 1600) and it should automatically set the height to maintain the aspect ratio. To flip the image, select Image -> Transform -> Flip Vertically. Export the image (File -> Export As...).
+The original image is 5312 pixels wide x 2988 pixels high. While this will *work*, it's probably a lot larger image than is needed, even for a decent image. For this example, let's say that we want to constrain the width to 1600 pixels. Further, we're going to test it on several SDR programs, all of which use a falling waterfall. This means we'll need to flip the image (unless you enjoy looking at images upside-down). There are several ways to accomplish these tasks.
+
+## Using Imagemagick & Gnu Octave
+ 
+   - Use imagemagick to resize and vertically flip the image. In the command line, navigate to the directory containing the image and use the following command to set the image to a 1600 pixel width, have the system automatically set the height to maintain the same aspect ratio, and flip the image: **convert inputfile.jpg -resize 1600x -flip outputfile.jpg**
+   - Place the image created using imagemagick, and the Gnu Octave script "grcImage", into the Gnu Octave working directory. In Gnu Octave, run the script. It will ask for the filename. Type (or copy-and-paste) the filename. It will automatically convert the image to grayscale and output the image as a 1D array of values representing each line of the image. The values will be 8-bit unsigned integers (which is why the extension has been added as ".ru8").
+   - NOTE: You can also use Imagemagick to just resize the image, then use the Gnu Octave script "grcImageFlip" to convert the image to grayscale, flip it vertically, and export it as the 8-bit unsigned integers.
+
+The ".ru8" file created by Gnu Octave can be imported directly into the Gnu Radio Companion flowgraph "image2spectrum.grc" to create the spectral painting.
+
+## Using ffmpeg & Gnu Octave
+
+   - Use ffmpeg to resize the image (and possible flip it vertically). As with imagemagick, ffmpeg can both resize and flip the image, all from one statement on the command line. Again from command line, navigate to the directory containing the image, then use the following command to resize to a width of 1600 pixels, automatically set the height to maintain the same aspect ratio, and flip the image: **ffmpeg -i inputfile.jpg -filter:v "vflip, scale=1600:-1" outputfile.jpg**
+   - Place the image created using ffmpeg, and the Gnu Octave script "grcImage", into the Gnu Octave working directory. In Gnu Octave, run the script. It will ask for the filename. Type (or copy-and-paste) the filename. It will automatically convert the image to grayscale and output the image as a 1D array of values representing each line of the image. The values will be 8-bit unsigned integers (which is why the extension has been added as ".ru8").
+   - NOTE: You can also use ffmpeg to just resize the image, then use the Gnu Octave script "grcImageFlip" to convert the image to grayscale, flip it vertically, and export it as the 8-bit unsigned integers.
+
+The ".ru8" file created by Gnu Octave can be imported directly into the Gnu Radio Companion flowgraph "image2spectrum.grc" to create the spectral painting.
 
 ![Resized and flipped image ready for processing with Gnu Octave.](https://github.com/JesterNoFool/SpectralPainting/blob/main/Lucerne-Reuss-river-resized-flipped.jpg)
+
+## Use Gimp
+
+Gimp allows for resizing the image, flipping vertically, converting to grayscale, and exporting in a format that Gnu Radio can directly import. Open Gimp and perform whichever of the following steps are necessary:
+
+   - OPTIONAL: Resize the image. Image -> Scale Image -> adjust the needed sizes (width, height, or a combination of the two) -> Click on the "Scale" button.
+   - MANDATORY: Convert to grayscale. Image -> Mode -> Grayscale.
+   - OPTIONAL: Flip the image vertically. Image -> Transform -> Flip Vertically.
+   - MANDATORY: Export the image as a ".raw" file. File -> Export As... -> Enter a filename and ensure that it has the extension .raw. When you click "Export", a popup window will appear. Leave the defaults and click on "Export" again to save the file.
+
+The ".raw" file created by Gimp can be imported directly into the Gnu Radio Companion flowgraph "image2spectrum.grc" to create the spectral painting.
+
+# Use Gnu Radio Companion to create the spectral painting
+
+
 
 ## Scale Amplitudes, Convert to Black-and-White, and Output as Floating-Point Values
 
