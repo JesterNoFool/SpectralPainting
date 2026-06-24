@@ -41,7 +41,7 @@ The original image is 5312 pixels wide x 2988 pixels high. While this will *work
       >>Enter the filename: Lucerne-Reuss-river-resized-flipped.jpg
 
       >>Successfully wrote file as Lucerne-Reuss-river-resized-flipped-1600pt-width.ru8
-      ```
+  ```
 
 The ".ru8" file created by Gnu Octave can be imported directly into the Gnu Radio Companion flowgraph "image2spectrum.grc" to create the spectral painting.
 
