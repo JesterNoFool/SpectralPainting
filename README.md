@@ -66,6 +66,8 @@ The ".raw" file created by Gimp can be imported directly into the Gnu Radio Comp
 
 # Use Gnu Radio Companion to create the spectral painting
 
+![Gnu Radio Companion flowgraph "image2spectrum.grc"](https://github.com/JesterNoFool/SpectralPainting/blob/main/image2spectrum-flowgraph.jpg)
+
 The provided Gnu Radio Companion flowgraph will:
 
    - read in the file
