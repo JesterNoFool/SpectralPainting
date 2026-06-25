@@ -11,8 +11,8 @@ The general steps for creating a "spectral painting", assuming you have an image
    - ffmpeg: From the command line, "ffmpeg -i inputfile.jpg -filter:v "vflip, scale=1600:-1" outputfile.jpg"
    - Gimp: Import the image, scale the image (Image -> Scale Image), and flip (if necessary, Image -> Transform -> Flip Vertically).
 2. Transform the image into a grayscale and export it as a straight "raw" file (8-bit unsigned integers) that can be imported directly into Gnu Radio Companion. The methods to do this are:
-   - Use Gimp to both convert to grayscale (Image -> Mode -> Grayscale). Then export as a ".raw" file (File -> Export As... -> Change the extension on the filename to ".raw").
-   - Use either of the Gnu Octave scripts provided (grcImage or grcImageFlip) to both convert to grayscale and export as 8-bit unsigned integers (adds a ".ru8" extension).
+   - Use Gimp to both convert to grayscale (Image -> Mode -> Grayscale) and export as a ".raw" file (File -> Export As... -> Change the extension on the filename to ".raw").
+   - Use either of the Gnu Octave scripts provided (grcImage or grcImageFlip) to both convert to grayscale and export as 8-bit unsigned integers (adds a ".ru8" extension). NOTE: The "grcImageFlip" script will flip the image vertically (upside-down).
 3. Use the Gnu Radio Companion flowgraph to:
    - adjust (pre-distort) the amplitudes that, when displayed on the log scale of a spectral display, the image values will effectively be linear.
    - randomize the phase of each frequency point (bin)
